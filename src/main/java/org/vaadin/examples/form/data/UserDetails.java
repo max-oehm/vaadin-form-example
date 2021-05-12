@@ -1,8 +1,13 @@
 package org.vaadin.examples.form.data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -10,8 +15,13 @@ import org.hibernate.validator.constraints.Length;
  * <p>
  * Uses Bean Validation (JSR-303) annotations for automatic validation.
  */
+@Entity
+@DynamicUpdate
+@Table(name="users")
 public class UserDetails {
 
+    @Id
+    @GeneratedValue
     private Long id;
 
     @NotNull
@@ -25,7 +35,7 @@ public class UserDetails {
     @Length(min = 4, max = 64)
     private String handle;
 
-    private AvatarImage avatar;
+    private String avatar;
 
     @Email
     private String email;
@@ -69,11 +79,11 @@ public class UserDetails {
         this.handle = handle;
     }
 
-    public AvatarImage getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(AvatarImage avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 

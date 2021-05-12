@@ -1,16 +1,23 @@
 package org.vaadin.examples.form.data;
 
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.vaadin.examples.form.data.repo.UserDetailRepository;
 
 @Service
 public class UserDetailsService implements Serializable {
 
     private String previousHandle;
 
+
+    @Autowired
+    private UserDetailRepository userDetailRepository;
     /**
      * 'Stores' the bean.
      * <p>
@@ -18,13 +25,20 @@ public class UserDetailsService implements Serializable {
      */
     public void store(UserDetails userDetails) throws ServiceException {
 
+        int strength = 10;
+        BCryptPasswordEncoder bCryptPasswordEncoder =
+                new BCryptPasswordEncoder(strength, new SecureRandom());
+
+        userDetails.setPassword(bCryptPasswordEncoder.encode(userDetails.getPassword()));
+        userDetailRepository.save(userDetails);
+
         // Here you can store the object into the DB, call REST services, etc.
 
-        // for demo purposes, always fail first try
         if (previousHandle == null || !previousHandle.equals(userDetails.getHandle())) {
             previousHandle = userDetails.getHandle();
             throw new ServiceException("This exception simulates an error in the backend, and is intentional. Please try to submit the form again.");
         }
+
     }
 
     /**
