@@ -1,4 +1,4 @@
-# Project example for creating a signup form with Vaadin 14+
+# Project example for creating a signup form with Vaadin 19 and hibernate
 
 This project demonstrates how to create a more complex form using the Vaadin 14+ Java API (Binder). The form code can be found in MainView.java. In addition, AvatarField.java has an implementation of a custom field.
 
